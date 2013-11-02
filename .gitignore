@@ -1,3 +1,8 @@
+.build/
+.project
+.cproject
+*.a
+*Config.cmake
 CMakeCache.txt
 CMakeFiles
 Makefile
