@@ -1,3 +1,5 @@
+project( "C6x COFF dump" )
+
 cmake_minimum_required( VERSION 2.8.3 )
 
 set( CMAKE_ECLIPSE_VERSION 3.7 )
