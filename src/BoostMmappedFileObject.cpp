@@ -34,6 +34,11 @@ BoostMmappedFileObject::BoostMmappedFileObject(boost::iostreams::mapped_file_sou
     ;
 }
 
+BoostMmappedFileObject::~BoostMmappedFileObject(void)
+{
+    m_file.close();
+}
+
 const char * BoostMmappedFileObject::data(void) const
 {
     return m_file.data();

@@ -44,7 +44,7 @@ class BoostMmappedFileObject : public IFileObject
 {
 public:
 static std::shared_ptr<BoostMmappedFileObject> fromPath(const std::string & in_path);
-virtual ~BoostMmappedFileObject(){}
+virtual ~BoostMmappedFileObject();
 
 private:
 BoostMmappedFileObject(boost::iostreams::mapped_file_source & in_file);
