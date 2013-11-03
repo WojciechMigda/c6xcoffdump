@@ -1,4 +1,4 @@
-project( "C6x COFF dump" )
+project( "C6x COFF dump" CXX )
 
 cmake_minimum_required( VERSION 2.8.3 )
 
@@ -21,7 +21,7 @@ set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake-modules )
 ################################################################################
 
 include_directories(
-    ${CMAKE_CURRENT_LIST_DIR}/api
+    api
 )
 
 ################################################################################
