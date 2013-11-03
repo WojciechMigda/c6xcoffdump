@@ -4,7 +4,7 @@
  * Distributed under the terms of the Apache 2.0 license
  *******************************************************************************
  *
- * Filename: main.cpp
+ * Filename: CoffFile.cpp
  *
  * Description:
  *      description
@@ -17,17 +17,16 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-02   wm              Initial version
+ * 2013-11-03   wm              Initial version
  *
  ******************************************************************************/
 
 #include "CoffFile.hpp"
 #include <memory>
-#include <iostream>
 
-int main()
+std::shared_ptr<Coff::File> Coff::File::createFromStream(std::istream & i_stream)
 {
-    std::shared_ptr<Coff::File>   Coff::File::createFromStream(std::cin);
+    std::shared_ptr<Coff::File>     result;
 
-    return 0;
+    return result;
 }
