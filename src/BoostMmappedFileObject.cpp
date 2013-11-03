@@ -26,6 +26,7 @@
 #include "BoostMmappedFileObject.hpp"
 #include <string>
 #include <cstddef>
+#include <cassert>
 
 BoostMmappedFileObject::BoostMmappedFileObject(boost::iostreams::mapped_file_source & in_file) :
     IFileObject(),
@@ -54,6 +55,8 @@ std::shared_ptr<BoostMmappedFileObject> BoostMmappedFileObject::fromPath(const s
     std::shared_ptr<BoostMmappedFileObject> result;
 
     boost::iostreams::mapped_file_source file(in_path);
+
+    assert(file.is_open());
 
 //    result = std::make_shared<BoostMmappedFileObject>(file);
     BoostMmappedFileObject * instance = new BoostMmappedFileObject(file);
