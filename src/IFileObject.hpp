@@ -4,7 +4,7 @@
  * Distributed under the terms of the Apache 2.0 license
  *******************************************************************************
  *
- * Filename: main.cpp
+ * Filename: IFileObject.hpp
  *
  * Description:
  *      description
@@ -17,26 +17,33 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-02   wm              Initial version
+ * 2013-11-03   wm              Initial version
  *
  ******************************************************************************/
 
-//#include "CoffFile.hpp"
-#include "IFileObject.hpp"
-#include "FileObjectFactory.hpp"
-#include <memory>
-#include <iostream>
+/*
+ *  Interface class Checklist:
+ *  ==========================
+ *  [ ] Methods are abstract: virtual method() = 0;
+ *  [ ] No ctor is defined
+ *  [ ] Destructor is not abstract: virtual ~dtor();
+ *  [ ] Copy operator is private and undefined: T& operator=(const T &);
+ */
 
-int main()
+#ifndef IFILEOBJECT_HPP_
+#define IFILEOBJECT_HPP_
+
+#include <cstddef>
+
+class IFileObject
 {
-    std::shared_ptr<IFileObject>    file_object = createFileObject("sample.obj");
+public:
+virtual ~IFileObject(){}
+virtual const char * data(void) const = 0;
+virtual std::size_t size(void) const = 0;
 
-    const char * data = file_object->data();
-    std::size_t size = file_object->size();
+private:
+IFileObject & operator=(const IFileObject  &) = delete;
+};
 
-    std::cout << size << ' ' << (data != 0) << std::endl;
-
-//    std::shared_ptr<Coff::File>   file = Coff::File::createFromStream(std::cin);
-
-    return 0;
-}
+#endif /* IFILEOBJECT_HPP_ */

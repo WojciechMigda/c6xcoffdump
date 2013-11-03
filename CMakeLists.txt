@@ -5,10 +5,12 @@ cmake_minimum_required( VERSION 2.8.3 )
 set( CMAKE_ECLIPSE_VERSION 3.7 )
 set( _ECLIPSE_VERSION 3.7 )
 
-#add_definitions( -O2 -ggdb -std=c++0x )
-add_definitions( -O2 -std=c++0x -ggdb -D__GXX_EXPERIMENTAL_CXX0X__ )
+add_definitions( -O2 -ggdb -std=c++0x )
+#add_definitions( -O2 -std=c++0x -ggdb -D__GXX_EXPERIMENTAL_CXX0X__ )
 
 ################################################################################
+
+find_package( Boost COMPONENTS iostreams REQUIRED )
 
 set( CXXTEST_USE_PYTHON YES CACHE INTERNAL "" )
 find_program(CXXTEST_PYTHON_TESTGEN_EXECUTABLE cxxtestgen
@@ -27,7 +29,9 @@ include_directories(
 ################################################################################
 
 set( src_list
-    src/main.cpp
+    src/BoostMmappedFileObject.cpp
+    src/CoffFile.cpp
+    src/FileObjectFactory.cpp
 )
 
 set( lib_name coff )
@@ -45,6 +49,7 @@ add_executable( main src/main.cpp )
 target_link_libraries(
     main
     ${lib_name}
+    ${Boost_LIBRARIES}
 )
 
 
