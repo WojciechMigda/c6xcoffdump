@@ -24,6 +24,7 @@
 #include "boost/iostreams/device/mapped_file.hpp"
 
 #include "BoostMmappedFileObject.hpp"
+#include <cstdint>
 #include <string>
 #include <cstddef>
 #include <cassert>
@@ -40,10 +41,10 @@ BoostMmappedFileObject::~BoostMmappedFileObject(void)
     m_file.close();
 }
 
-const char * BoostMmappedFileObject::data(void) const
-{
-    return m_file.data();
-}
+//const std::uint8_t * BoostMmappedFileObject::data(void) const
+//{
+//    return m_file.data();
+//}
 
 std::size_t BoostMmappedFileObject::size(void) const
 {
@@ -58,9 +59,14 @@ std::shared_ptr<BoostMmappedFileObject> BoostMmappedFileObject::fromPath(const s
 
     assert(file.is_open());
 
-//    result = std::make_shared<BoostMmappedFileObject>(file);
+//    result = std::make_shared<BoostMmappedFileObject>(file); // wtf, this crashes gcc-4.7
     BoostMmappedFileObject * instance = new BoostMmappedFileObject(file);
     result.reset(instance);
 
     return result;
+}
+
+std::uint8_t BoostMmappedFileObject::at(const std::size_t pos) const
+{
+    return m_file.data()[pos];
 }

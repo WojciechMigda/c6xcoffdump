@@ -33,14 +33,16 @@
 #ifndef IFILEOBJECT_HPP_
 #define IFILEOBJECT_HPP_
 
+#include <cstdint>
 #include <cstddef>
 
 class IFileObject
 {
 public:
 virtual ~IFileObject(){}
-virtual const char * data(void) const = 0;
+//virtual const std::uint8_t * data(void) const = 0;
 virtual std::size_t size(void) const = 0;
+virtual std::uint8_t at(const std::size_t) const = 0;
 
 private:
 IFileObject & operator=(const IFileObject  &) = delete;

@@ -36,6 +36,7 @@
 #include "boost/iostreams/device/mapped_file.hpp"
 
 #include"IFileObject.hpp"
+#include <cstdint>
 #include <string>
 #include <cstddef>
 #include <memory>
@@ -49,8 +50,9 @@ virtual ~BoostMmappedFileObject();
 private:
 BoostMmappedFileObject(boost::iostreams::mapped_file_source & in_file);
 
-virtual const char * data(void) const;
+//virtual const std::uint8_t * data(void) const;
 virtual std::size_t size(void) const;
+virtual std::uint8_t at(const std::size_t pos) const;
 
 boost::iostreams::mapped_file_source    m_file;
 };

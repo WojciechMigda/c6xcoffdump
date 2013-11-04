@@ -31,10 +31,9 @@ int main()
 {
     std::shared_ptr<IFileObject>    file_object = createFileObject("sample.obj");
 
-    const char * data = file_object->data();
     std::size_t size = file_object->size();
 
-    std::cout << size << ' ' << (data != 0) << std::endl;
+    std::cout << size << std::endl;
 
 //    std::shared_ptr<Coff::File>   file = Coff::File::createFromStream(std::cin);
 
