@@ -31,6 +31,7 @@ include_directories(
 set( src_list
     src/BoostMmappedFileObject.cpp
     src/CoffFile.cpp
+    src/CoffFileHeader.cpp
     src/FileObjectFactory.cpp
 )
 
