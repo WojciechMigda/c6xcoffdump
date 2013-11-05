@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2013 Wojciech Migda
  * All rights reserved
- * Distributed under the terms of the Apache 2.0 license
+ * Distributed under the terms of the GNU LGPL v3
  *******************************************************************************
  *
- * Filename: IFileObject.hpp
+ * Filename: ICoffFile.hpp
  *
  * Description:
  *      description
@@ -17,7 +17,7 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-03   wm              Initial version
+ * 2013-11-05   wm              Initial version
  *
  ******************************************************************************/
 
@@ -30,27 +30,23 @@
  *  [ ] Copy operator is private and undefined: T& operator=(const T &);
  */
 
-#ifndef IFILEOBJECT_HPP_
-#define IFILEOBJECT_HPP_
+#ifndef ICOFFFILE_HPP_
+#define ICOFFFILE_HPP_
 
-#include <cstdint>
-#include <cstddef>
+#include <string>
 #include <memory>
 
-class IFileObject
+class ICoffFile
 {
 public:
-typedef std::unique_ptr<IFileObject> uptr;
-typedef std::shared_ptr<IFileObject> sptr;
+typedef std::unique_ptr<ICoffFile> uptr;
+typedef std::shared_ptr<ICoffFile> sptr;
 
-virtual ~IFileObject(){}
-
-virtual std::size_t size(void) const = 0;
-virtual std::uint8_t at(const std::size_t i_pos) const = 0;
-virtual std::size_t read(std::uint8_t & o_buf, const std::size_t i_size, const std::size_t i_offset) const = 0;
+virtual ~ICoffFile(){}
+virtual std::string toString(void) const = 0;
 
 private:
-IFileObject & operator=(const IFileObject  &) = delete;
+ICoffFile & operator=(const ICoffFile &) = delete;
 };
 
-#endif /* IFILEOBJECT_HPP_ */
+#endif /* ICOFFFILE_HPP_ */

@@ -25,26 +25,24 @@
 #ifndef COFFFILE_HPP_
 #define COFFFILE_HPP_
 
-#include <istream>
-#include <algorithm>
-#include <memory>
+#include "IFileObject.hpp"
+#include "ICoffFileHeader.hpp"
+#include "ICoffFile.hpp"
 
 namespace Coff
 {
 
-class FileHeader
-{
-
-};
-
-class File
+class File : public ICoffFile
 {
 public:
-    static std::shared_ptr<File> createFromStream(std::istream & in_stream);
 
-    File(std::unique_ptr<FileHeader> in_file_header);
+File(ICoffFileHeader::uptr i_file_header);
+static ICoffFile::uptr fromFileObject(IFileObject::sptr i_file);
+
 private:
-std::shared_ptr<FileHeader>             m_file_header;
+std::string toString(void) const;
+
+ICoffFileHeader::uptr        m_file_header;
 //std::shared_ptr<OptionalFileHeader>     m_opt_file_header;
 //std::shared_ptr<SectionHeaderColl>      m_section_header_coll;
 //std::shared_ptr<SectionRawDataColl>     m_section_raw_data_coll;

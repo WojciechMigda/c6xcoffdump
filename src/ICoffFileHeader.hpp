@@ -1,10 +1,10 @@
 /*******************************************************************************
  * Copyright (c) 2013 Wojciech Migda
  * All rights reserved
- * Distributed under the terms of the Apache 2.0 license
+ * Distributed under the terms of the GNU LGPL v3
  *******************************************************************************
  *
- * Filename: IFileObject.hpp
+ * Filename: ICoffFileHeader.hpp
  *
  * Description:
  *      description
@@ -17,7 +17,7 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-03   wm              Initial version
+ * 2013-11-04   wm              Initial version
  *
  ******************************************************************************/
 
@@ -30,27 +30,30 @@
  *  [ ] Copy operator is private and undefined: T& operator=(const T &);
  */
 
-#ifndef IFILEOBJECT_HPP_
-#define IFILEOBJECT_HPP_
+#ifndef ICOFFFILEHEADER_HPP_
+#define ICOFFFILEHEADER_HPP_
 
-#include <cstdint>
-#include <cstddef>
+#include <cstdarg>
+#include <string>
 #include <memory>
 
-class IFileObject
+class ICoffFileHeader
 {
 public:
-typedef std::unique_ptr<IFileObject> uptr;
-typedef std::shared_ptr<IFileObject> sptr;
+typedef std::unique_ptr<ICoffFileHeader> uptr;
+typedef std::shared_ptr<ICoffFileHeader> sptr;
 
-virtual ~IFileObject(){}
+virtual ~ICoffFileHeader(){}
 
-virtual std::size_t size(void) const = 0;
-virtual std::uint8_t at(const std::size_t i_pos) const = 0;
-virtual std::size_t read(std::uint8_t & o_buf, const std::size_t i_size, const std::size_t i_offset) const = 0;
+virtual std::size_t numSectionHeaders(void) const = 0;
+virtual std::size_t symbolTableOffset(void) const = 0;
+virtual std::size_t numSymbolTableEntries(void) const = 0;
+virtual bool hasOptionalHeader(void) const = 0;
+
+virtual std::string toString(void) const = 0;
 
 private:
-IFileObject & operator=(const IFileObject  &) = delete;
+ICoffFileHeader & operator=(const ICoffFileHeader &) = delete;
 };
 
-#endif /* IFILEOBJECT_HPP_ */
+#endif /* ICOFFFILEHEADER_HPP_ */

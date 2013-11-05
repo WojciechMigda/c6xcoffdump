@@ -39,20 +39,20 @@
 #include <cstdint>
 #include <string>
 #include <cstddef>
-#include <memory>
 
 class BoostMmappedFileObject : public IFileObject
 {
 public:
-static std::shared_ptr<BoostMmappedFileObject> fromPath(const std::string & in_path);
+static IFileObject::uptr fromPath(const std::string & in_path);
 virtual ~BoostMmappedFileObject();
 
 private:
 BoostMmappedFileObject(boost::iostreams::mapped_file_source & in_file);
 
-//virtual const std::uint8_t * data(void) const;
+const std::uint8_t * data(void) const;
 virtual std::size_t size(void) const;
 virtual std::uint8_t at(const std::size_t pos) const;
+virtual std::size_t read(std::uint8_t & o_buf, const std::size_t i_size, const std::size_t i_offset) const;
 
 boost::iostreams::mapped_file_source    m_file;
 };

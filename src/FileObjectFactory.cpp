@@ -27,7 +27,7 @@
 #include <memory>
 #include <string>
 
-std::shared_ptr<IFileObject> createFileObject(const std::string & in_path)
+IFileObject::uptr createFileObject(const std::string & in_path)
 {
     return BoostMmappedFileObject::fromPath(in_path);
 }

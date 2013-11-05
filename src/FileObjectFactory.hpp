@@ -25,9 +25,8 @@
 #define FILEOBJECTFACTORY_HPP_
 
 #include "IFileObject.hpp"
-#include <memory>
 #include <string>
 
-std::shared_ptr<IFileObject> createFileObject(const std::string & in_path);
+IFileObject::uptr createFileObject(const std::string & in_path);
 
 #endif /* FILEOBJECTFACTORY_HPP_ */

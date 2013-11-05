@@ -21,21 +21,24 @@
  *
  ******************************************************************************/
 
-//#include "CoffFile.hpp"
+#include "CoffFile.hpp"
 #include "IFileObject.hpp"
+#include "ICoffFile.hpp"
 #include "FileObjectFactory.hpp"
-#include <memory>
+
 #include <iostream>
+#include <cstdarg>
 
 int main()
 {
-    std::shared_ptr<IFileObject>    file_object = createFileObject("sample.obj");
+    IFileObject::sptr   file_object = createFileObject("sample.obj");
 
     std::size_t size = file_object->size();
-
     std::cout << size << std::endl;
 
-//    std::shared_ptr<Coff::File>   file = Coff::File::createFromStream(std::cin);
+    ICoffFile::uptr   file = Coff::File::fromFileObject(file_object);
+
+    std::cout << file->toString() << std::endl;
 
     return 0;
 }

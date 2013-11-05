@@ -4,7 +4,7 @@
  * Distributed under the terms of the Apache 2.0 license
  *******************************************************************************
  *
- * Filename: CoffFile.cpp
+ * Filename: CoffFileHeader.hpp
  *
  * Description:
  *      description
@@ -17,42 +17,41 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-03   wm              Initial version
+ * 2013-11-04   wm              Initial version
  *
  ******************************************************************************/
 
+
+#ifndef COFFFILEHEADER_HPP_
+#define COFFFILEHEADER_HPP_
+
 #include "IFileObject.hpp"
 #include "ICoffFileHeader.hpp"
-#include "ICoffFile.hpp"
 
-#include "CoffFileHeader.hpp"
-#include "CoffFile.hpp"
-
-#include <memory>
 #include <string>
-#include <cassert>
-#include <algorithm>
+#include <cstdarg>
 
-ICoffFile::uptr Coff::File::fromFileObject(IFileObject::sptr i_file)
+namespace Coff
 {
-    ICoffFileHeader::uptr   file_header = Coff::FileHeader::fromFileObject(i_file);
 
-    assert(file_header);
+class FileHeader : public ICoffFileHeader
+{
+public:
+static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file);
 
-    Coff::File * instance = new (std::nothrow) Coff::File{std::move(file_header)};
-    Coff::File::uptr     result{instance};
+~FileHeader(){}
 
-    return result;
+private:
+FileHeader(IFileObject::sptr i_file);
+
+virtual std::string toString(void) const;
+virtual std::size_t numSectionHeaders(void) const;
+virtual std::size_t symbolTableOffset(void) const;
+virtual std::size_t numSymbolTableEntries(void) const;
+virtual bool hasOptionalHeader(void) const;
+};
+
 }
 
-Coff::File::File(ICoffFileHeader::uptr i_file_header) :
-    ICoffFile(),
-    m_file_header(std::move(i_file_header))
-{
-    ;
-}
 
-std::string Coff::File::toString(void) const
-{
-    return m_file_header->toString();
-}
+#endif /* COFFFILEHEADER_HPP_ */
