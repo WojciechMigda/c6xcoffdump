@@ -5,7 +5,7 @@ cmake_minimum_required( VERSION 2.8.3 )
 set( CMAKE_ECLIPSE_VERSION 3.7 )
 set( _ECLIPSE_VERSION 3.7 )
 
-add_definitions( -O2 -ggdb -std=c++0x )
+add_definitions( -O2 -ggdb -std=c++0x -Wall -pedantic )
 #add_definitions( -O2 -std=c++0x -ggdb -D__GXX_EXPERIMENTAL_CXX0X__ )
 
 ################################################################################

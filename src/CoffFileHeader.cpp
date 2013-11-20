@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2013 Wojciech Migda
  * All rights reserved
- * Distributed under the terms of the GNU LGPL v3
+ * Distributed under the terms of the Apache 2.0 license
  *******************************************************************************
  *
  * Filename: CoffFileHeader.cpp
@@ -24,6 +24,7 @@
 #include "CoffFileHeader.hpp"
 #include "ICoffFileHeader.hpp"
 #include "IFileObject.hpp"
+#include "FileObjectAlgo.hpp"
 
 #include <memory>
 #include <cassert>
@@ -53,20 +54,37 @@ enum
     VERSION_ID_COFF2    = 0xc2,
 };
 
+namespace
+{
+
+bool isSupported(IFileObject::sptr i_file)
+{
+    const std::uint16_t   magic = FileObject::read_le<std::uint16_t>(i_file, 0);
+
+    bool retval = (magic == VERSION_ID_COFF2);
+    
+    return retval;
+}
+
+}
+
 ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file)
 {
-    assert(i_file->at(0) == VERSION_ID_COFF1
-        || i_file->at(0) == VERSION_ID_COFF2);
+    assert(i_file->size() >= COFF1_2_HEADER_SIZE);
 
-    assert(i_file->size() > COFF1_2_HEADER_SIZE);
+    if (!isSupported(i_file))
+    {
+        assert(false);
+        return ICoffFileHeader::uptr{nullptr};
+    }
 
-    Coff::FileHeader * instance = new Coff::FileHeader{i_file};
+    Coff::FileHeader * instance = new Coff::FileHeader{};
     ICoffFileHeader::uptr   result{instance};
 
     return result;
 }
 
-Coff::FileHeader::FileHeader(IFileObject::sptr i_file_object) :
+Coff::FileHeader::FileHeader() :
     ICoffFileHeader()
 {
     ;

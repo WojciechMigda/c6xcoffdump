@@ -42,16 +42,21 @@ static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file);
 ~FileHeader(){}
 
 private:
-FileHeader(IFileObject::sptr i_file);
+FileHeader();
 
 virtual std::string toString(void) const;
 virtual std::size_t numSectionHeaders(void) const;
 virtual std::size_t symbolTableOffset(void) const;
 virtual std::size_t numSymbolTableEntries(void) const;
 virtual bool hasOptionalHeader(void) const;
+
+std::size_t     mNumSectionHeaders;
+std::size_t     mSymbolTableOffset;
+std::size_t     mNumSymbolTableEntries;
+bool            mHasOptionalHeader;
+
 };
 
 }
-
 
 #endif /* COFFFILEHEADER_HPP_ */
