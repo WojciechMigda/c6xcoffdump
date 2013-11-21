@@ -67,11 +67,12 @@ FileHeader(
     TargetId                    targetId
     );
 
-virtual std::string toString(void) const;
-virtual std::size_t sectionHeadersNum(void) const;
-virtual std::size_t symbolTableOffset(void) const;
-virtual std::size_t symbolTableEntriesNum(void) const;
-virtual bool hasOptionalHeader(void) const;
+std::string toString(void) const;
+std::size_t sectionHeadersNum(void) const;
+std::size_t symbolTableOffset(void) const;
+std::size_t symbolTableEntriesNum(void) const;
+bool hasOptionalHeader(void) const;
+std::size_t size(void) const;
 
 VersionId const             mVersionId;
 SectionHeadersNum const     mSectionHeadersNum;

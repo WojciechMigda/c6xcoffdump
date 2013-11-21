@@ -4,7 +4,7 @@
  * Distributed under the terms of the Apache 2.0 license
  *******************************************************************************
  *
- * Filename: ICoffFileHeader.hpp
+ * Filename: ICoffSectionHeader.hpp
  *
  * Description:
  *      description
@@ -17,44 +17,40 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-04   wm              Initial version
+ * 2013-11-21   wm              Initial version
  *
  ******************************************************************************/
 
 /*
  *  Interface class Checklist:
  *  ==========================
- *  [x] Methods are abstract: virtual method() = 0;
- *  [x] No ctor is defined
- *  [x] Destructor is not abstract: virtual ~dtor();
- *  [x] Copy operator is private and undefined: T& operator=(const T &);
+ *  [ ] Methods are abstract: virtual method() = 0;
+ *  [ ] No ctor is defined
+ *  [ ] Destructor is not abstract: virtual ~dtor();
+ *  [ ] Copy operator is private and undefined: T& operator=(const T &);
  */
 
-#ifndef ICOFFFILEHEADER_HPP_
-#define ICOFFFILEHEADER_HPP_
+#ifndef ICOFFSECTIONHEADER_HPP_
+#define ICOFFSECTIONHEADER_HPP_
 
 #include <cstdarg>
 #include <string>
 #include <memory>
 
-class ICoffFileHeader
+class ICoffSectionHeader
 {
 public:
-typedef std::unique_ptr<ICoffFileHeader> uptr;
-typedef std::shared_ptr<ICoffFileHeader> sptr;
+typedef std::unique_ptr<ICoffSectionHeader> uptr;
+typedef std::shared_ptr<ICoffSectionHeader> sptr;
 
-virtual ~ICoffFileHeader(){}
+virtual ~ICoffSectionHeader(){}
 
-virtual std::size_t sectionHeadersNum(void) const = 0;
-virtual std::size_t symbolTableOffset(void) const = 0;
-virtual std::size_t symbolTableEntriesNum(void) const = 0;
-virtual bool hasOptionalHeader(void) const = 0;
 virtual std::size_t size(void) const = 0;
 
 virtual std::string toString(void) const = 0;
 
 private:
-ICoffFileHeader & operator=(const ICoffFileHeader &) = delete;
+ICoffSectionHeader & operator=(const ICoffSectionHeader &) = delete;
 };
 
-#endif /* ICOFFFILEHEADER_HPP_ */
+#endif /* ICOFFSECTIONHEADER_HPP_ */

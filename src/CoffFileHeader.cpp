@@ -181,3 +181,8 @@ bool Coff::FileHeader::hasOptionalHeader(void) const
 {
     return mOptionalHeaderSize != 0;
 }
+
+std::size_t Coff::FileHeader::size(void) const
+{
+    return COFF1_2_HEADER_SIZE;
+}

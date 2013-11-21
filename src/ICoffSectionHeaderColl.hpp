@@ -4,7 +4,7 @@
  * Distributed under the terms of the Apache 2.0 license
  *******************************************************************************
  *
- * Filename: ICoffFileHeader.hpp
+ * Filename: ICoffSectionHeaderColl.hpp
  *
  * Description:
  *      description
@@ -17,7 +17,7 @@
  * --------
  * Date         Who  Ticket     Description
  * ----------   ---  ---------  ------------------------------------------------
- * 2013-11-04   wm              Initial version
+ * 2013-11-21   wm              Initial version
  *
  ******************************************************************************/
 
@@ -30,31 +30,29 @@
  *  [x] Copy operator is private and undefined: T& operator=(const T &);
  */
 
-#ifndef ICOFFFILEHEADER_HPP_
-#define ICOFFFILEHEADER_HPP_
+#ifndef ICOFFSECTIONHEADERCOLL_HPP_
+#define ICOFFSECTIONHEADERCOLL_HPP_
 
 #include <cstdarg>
 #include <string>
 #include <memory>
+#include <vector>
 
-class ICoffFileHeader
+class ICoffSectionHeaderColl
 {
 public:
-typedef std::unique_ptr<ICoffFileHeader> uptr;
-typedef std::shared_ptr<ICoffFileHeader> sptr;
+typedef std::unique_ptr<ICoffSectionHeaderColl> uptr;
+typedef std::shared_ptr<ICoffSectionHeaderColl> sptr;
+typedef std::vector<sptr>                       coll;
 
-virtual ~ICoffFileHeader(){}
+virtual ~ICoffSectionHeaderColl(){}
 
-virtual std::size_t sectionHeadersNum(void) const = 0;
-virtual std::size_t symbolTableOffset(void) const = 0;
-virtual std::size_t symbolTableEntriesNum(void) const = 0;
-virtual bool hasOptionalHeader(void) const = 0;
 virtual std::size_t size(void) const = 0;
 
 virtual std::string toString(void) const = 0;
 
 private:
-ICoffFileHeader & operator=(const ICoffFileHeader &) = delete;
+ICoffSectionHeaderColl & operator=(const ICoffSectionHeaderColl &) = delete;
 };
 
-#endif /* ICOFFFILEHEADER_HPP_ */
+#endif /* ICOFFSECTIONHEADERCOLL_HPP_ */
