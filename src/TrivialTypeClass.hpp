@@ -33,11 +33,12 @@ class TrivialType
 {
 public:
     typedef _Tp type;
-    static_assert(std::is_trivial<_Tp>::value == true, "template argument must be a trivial type");
+//    static_assert(std::is_trivial<_Tp>::value == true, "template argument must be a trivial type");
 
     constexpr TrivialType() = default;
     constexpr TrivialType(const type & value) : m_value(value){}
     operator type &(){return m_value;}
+    operator type const &() const {return m_value;}
 private:
     type    m_value;
 };

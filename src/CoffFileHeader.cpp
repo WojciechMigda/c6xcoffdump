@@ -26,8 +26,12 @@
 #include "IFileObject.hpp"
 #include "FileObjectAlgo.hpp"
 
+#include <boost/format.hpp>
+
 #include <memory>
 #include <cassert>
+#include <string>
+#include <iomanip>
 
 enum
 {
@@ -62,7 +66,7 @@ bool isSupported(IFileObject::sptr i_file)
     const std::uint16_t   magic = FileObject::read_le<std::uint16_t>(i_file, 0);
 
     bool retval = (magic == VERSION_ID_COFF2);
-    
+
     return retval;
 }
 
@@ -74,43 +78,106 @@ ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file)
 
     if (!isSupported(i_file))
     {
-        assert(false);
+        assert(isSupported(i_file));
         return ICoffFileHeader::uptr{nullptr};
     }
 
-    Coff::FileHeader * instance = new Coff::FileHeader{};
+    SectionHeadersNum const section_hdrs_n = FileObject::read_le<std::uint16_t>(i_file, 2);
+    DateTimeStamp const date_time_stamp = FileObject::read_le<std::uint32_t>(i_file, 4);
+    SymbolTableOffset const symtab_offset = FileObject::read_le<std::uint32_t>(i_file, 8);
+    SymbolTableEntriesNum const symtab_entries_n = FileObject::read_le<std::uint32_t>(i_file, 12);
+    OptionalHeaderSize const optional_hdr_size = FileObject::read_le<std::uint16_t>(i_file, 16);
+    Flags const flags = std::bitset<16>(FileObject::read_le<std::uint16_t>(i_file, 18));
+    TargetId const target_id = FileObject::read_le<std::uint16_t>(i_file, 20);
+
+    Coff::FileHeader * instance = new Coff::FileHeader
+        {
+        VERSION_ID_COFF2,
+        section_hdrs_n,
+        date_time_stamp,
+        symtab_offset,
+        symtab_entries_n,
+        optional_hdr_size,
+        flags,
+        target_id};
     ICoffFileHeader::uptr   result{instance};
 
     return result;
 }
 
-Coff::FileHeader::FileHeader() :
-    ICoffFileHeader()
+Coff::FileHeader::FileHeader(
+    VersionId const             versionId,
+    SectionHeadersNum const     sectionHeadersNum,
+    DateTimeStamp const         dateTimeStamp,
+    SymbolTableOffset const     symbolTableOffset,
+    SymbolTableEntriesNum const symbolTableEntriesNum,
+    OptionalHeaderSize const    optionalHeaderSize,
+    Flags const                 flags,
+    TargetId const              targetId)
+:
+    ICoffFileHeader(),
+    mVersionId(versionId),
+    mSectionHeadersNum(sectionHeadersNum),
+    mDateTimeStamp(dateTimeStamp),
+    mSymbolTableOffset(symbolTableOffset),
+    mSymbolTableEntriesNum(symbolTableEntriesNum),
+    mOptionalHeaderSize(optionalHeaderSize),
+    mFlags(flags),
+    mTargetId(targetId)
 {
     ;
 }
 
 std::string Coff::FileHeader::toString(void) const
 {
-    return "dupa";
+    using boost::format;
+    using boost::io::group;
+    using std::setw;
+    using std::setfill;
+    using std::left;
+    using std::right;
+
+    std::string retval;
+
+    retval =
+        (format("%1%\n") % group(left, setw(64), setfill('='), "==[COFF File Header]")).str() +
+        (format("%1% : VersionId\n") %
+            group(setw(10), (format("%1$04X") % mVersionId).str())).str() +
+        (format("%1% : SectionHeadersNum\n") %
+            group(setw(10), (format("%1$04X") % mSectionHeadersNum).str())).str() +
+        (format("%1% : DateTimeStamp\n") %
+            group(setw(10), (format("%1$08X") % mDateTimeStamp).str())).str() +
+        (format("%1% : SymbolTableOffset\n") %
+            group(setw(10), (format("%1$08X") % mSymbolTableOffset).str())).str() +
+        (format("%1% : SymbolTableEntriesNum\n") %
+            group(setw(10), (format("%1$08X") % mSymbolTableEntriesNum).str())).str() +
+        (format("%1% : OptionalHeaderSize\n") %
+            group(setw(10), (format("%1$04X") % mOptionalHeaderSize).str())).str() +
+        (format("%1% : Flags\n") %
+            group(setw(10), (format("%1$04X") % ((Flags::type &)mFlags).to_ulong()).str())).str() +
+        (format("%1% : TargetId\n") %
+            group(setw(10), (format("%1$04X") % mTargetId).str())).str() +
+        "";
+
+    return retval;
 }
 
-std::size_t Coff::FileHeader::numSectionHeaders(void) const
+std::size_t Coff::FileHeader::sectionHeadersNum(void) const
 {
-    return 0;
+    return mSectionHeadersNum;
 }
 
 std::size_t Coff::FileHeader::symbolTableOffset(void) const
 {
-    return 0;
+    return mSymbolTableOffset;
 }
 
-std::size_t Coff::FileHeader::numSymbolTableEntries(void) const
+std::size_t Coff::FileHeader::symbolTableEntriesNum(void) const
 {
-    return 0;
+    return mSymbolTableEntriesNum;
 }
 
 bool Coff::FileHeader::hasOptionalHeader(void) const
 {
-    return false;
+    return mOptionalHeaderSize != 0;
 }

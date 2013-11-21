@@ -45,9 +45,9 @@ typedef std::shared_ptr<ICoffFileHeader> sptr;
 
 virtual ~ICoffFileHeader(){}
 
-virtual std::size_t numSectionHeaders(void) const = 0;
+virtual std::size_t sectionHeadersNum(void) const = 0;
 virtual std::size_t symbolTableOffset(void) const = 0;
-virtual std::size_t numSymbolTableEntries(void) const = 0;
+virtual std::size_t symbolTableEntriesNum(void) const = 0;
 virtual bool hasOptionalHeader(void) const = 0;
 
 virtual std::string toString(void) const = 0;

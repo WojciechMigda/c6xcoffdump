@@ -25,11 +25,14 @@
 #ifndef COFFFILEHEADER_HPP_
 #define COFFFILEHEADER_HPP_
 
+#include "TrivialTypeClass.hpp"
+
 #include "IFileObject.hpp"
 #include "ICoffFileHeader.hpp"
 
 #include <string>
 #include <cstdarg>
+#include <bitset>
 
 namespace Coff
 {
@@ -42,18 +45,42 @@ static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file);
 ~FileHeader(){}
 
 private:
-FileHeader();
+
+TRIVIAL_TYPE(std::uint16_t,     VersionId);
+TRIVIAL_TYPE(std::size_t,       SectionHeadersNum);
+TRIVIAL_TYPE(std::uint32_t,     DateTimeStamp);
+TRIVIAL_TYPE(std::size_t,       SymbolTableOffset);
+TRIVIAL_TYPE(std::size_t,       SymbolTableEntriesNum);
+TRIVIAL_TYPE(std::size_t,       OptionalHeaderSize);
+TRIVIAL_TYPE(std::bitset<16>,   Flags);
+TRIVIAL_TYPE(std::uint16_t,     TargetId);
+
+
+FileHeader(
+    VersionId const             versionId,
+    SectionHeadersNum const     sectionHeadersNum,
+    DateTimeStamp const         dateTimeStamp,
+    SymbolTableOffset const     symbolTableOffset,
+    SymbolTableEntriesNum const symbolTableEntriesNum,
+    OptionalHeaderSize const    optionalHeaderSize,
+    Flags const                 flags,
+    TargetId                    targetId
+    );
 
 virtual std::string toString(void) const;
-virtual std::size_t numSectionHeaders(void) const;
+virtual std::size_t sectionHeadersNum(void) const;
 virtual std::size_t symbolTableOffset(void) const;
-virtual std::size_t numSymbolTableEntries(void) const;
+virtual std::size_t symbolTableEntriesNum(void) const;
 virtual bool hasOptionalHeader(void) const;
 
-std::size_t     mNumSectionHeaders;
-std::size_t     mSymbolTableOffset;
-std::size_t     mNumSymbolTableEntries;
-bool            mHasOptionalHeader;
+VersionId const             mVersionId;
+SectionHeadersNum const     mSectionHeadersNum;
+DateTimeStamp const         mDateTimeStamp;
+SymbolTableOffset const     mSymbolTableOffset;
+SymbolTableEntriesNum const mSymbolTableEntriesNum;
+OptionalHeaderSize const    mOptionalHeaderSize;
+Flags const                 mFlags;
+TargetId const              mTargetId;
 
 };
 
