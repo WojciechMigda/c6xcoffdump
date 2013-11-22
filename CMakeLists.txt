@@ -32,6 +32,7 @@ set( src_list
     src/BoostMmappedFileObject.cpp
     src/CoffFile.cpp
     src/CoffFileHeader.cpp
+    src/CoffSectionHeader.cpp
     src/CoffSectionHeaderColl.cpp
     src/FileObjectFactory.cpp
 )

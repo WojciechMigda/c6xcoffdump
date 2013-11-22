@@ -38,7 +38,7 @@ class File : public ICoffFile
 public:
 
 File(ICoffFileHeader::uptr i_file_header, ICoffSectionHeaderColl::uptr i_section_hdr_coll);
-static ICoffFile::uptr fromFileObject(IFileObject::sptr i_file);
+static ICoffFile::uptr fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos);
 
 private:
 std::string toString(void) const;

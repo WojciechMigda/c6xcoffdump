@@ -39,7 +39,6 @@
 
 #include <vector>
 #include <string>
-#include <cstdarg>
 
 namespace Coff
 {
@@ -47,15 +46,19 @@ namespace Coff
 class SectionHeaderColl : public ICoffSectionHeaderColl
 {
 public:
+typedef ICoffSectionHeaderColl::size_type   size_type;
 
 SectionHeaderColl(ICoffSectionHeaderColl::coll && i_coll);
-static ICoffSectionHeaderColl::uptr fromFileObject(IFileObject::sptr i_file, std::size_t const i_hdr_count);
+static ICoffSectionHeaderColl::uptr fromFileObject(
+    IFileObject::sptr i_file,
+    size_type const i_pos,
+    size_type const i_hdr_count);
 
 private:
 std::string toString(void) const;
-std::size_t size(void) const;
+size_type size(void) const;
 
-ICoffSectionHeaderColl::coll    m_coll;
+ICoffSectionHeaderColl::coll const  m_coll;
 
 };
 

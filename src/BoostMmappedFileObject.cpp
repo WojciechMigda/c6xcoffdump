@@ -24,9 +24,8 @@
 #include "boost/iostreams/device/mapped_file.hpp"
 
 #include "BoostMmappedFileObject.hpp"
-#include <cstdint>
+
 #include <string>
-#include <cstddef>
 #include <cassert>
 #include <algorithm>
 
@@ -42,12 +41,12 @@ BoostMmappedFileObject::~BoostMmappedFileObject(void)
     m_file.close();
 }
 
-const std::uint8_t * BoostMmappedFileObject::data(void) const
+BoostMmappedFileObject::cbyte_ptr BoostMmappedFileObject::data(void) const
 {
-    return reinterpret_cast<const std::uint8_t *>(m_file.data());
+    return reinterpret_cast<BoostMmappedFileObject::cbyte_ptr>(m_file.data());
 }
 
-std::size_t BoostMmappedFileObject::size(void) const
+BoostMmappedFileObject::size_type BoostMmappedFileObject::size(void) const
 {
     return m_file.size();
 }
@@ -64,19 +63,21 @@ IFileObject::uptr BoostMmappedFileObject::fromPath(const std::string & in_path)
     return result;
 }
 
-std::uint8_t BoostMmappedFileObject::at(const std::size_t pos) const
+BoostMmappedFileObject::byte_type BoostMmappedFileObject::at(size_type const pos) const
 {
     return m_file.data()[pos];
 }
 
-std::size_t BoostMmappedFileObject::read(
-    std::uint8_t & o_buf,
-    const std::size_t i_size,
-    const std::size_t i_offset) const
+BoostMmappedFileObject::size_type BoostMmappedFileObject::read(
+    BoostMmappedFileObject::byte_ptr const o_buf,
+    BoostMmappedFileObject::size_type const i_size,
+    BoostMmappedFileObject::size_type const i_offset) const
 {
-    const std::size_t nbytes = std::min(i_size, this->size() - i_offset);
+    assert(o_buf != nullptr);
 
-    std::copy(this->data(), this->data() + nbytes, &o_buf);
+    BoostMmappedFileObject::size_type const nbytes = std::min(i_size, this->size() - i_offset);
+
+    std::copy(this->data() + i_offset, this->data() + i_offset + nbytes, o_buf);
 
     return nbytes;
 }

@@ -33,6 +33,8 @@
 #ifndef ICOFFSECTIONHEADERCOLL_HPP_
 #define ICOFFSECTIONHEADERCOLL_HPP_
 
+#include "ICoffSectionHeader.hpp"
+
 #include <cstdarg>
 #include <string>
 #include <memory>
@@ -41,13 +43,14 @@
 class ICoffSectionHeaderColl
 {
 public:
+typedef std::size_t                             size_type;
 typedef std::unique_ptr<ICoffSectionHeaderColl> uptr;
 typedef std::shared_ptr<ICoffSectionHeaderColl> sptr;
-typedef std::vector<sptr>                       coll;
+typedef std::vector<ICoffSectionHeader::sptr>   coll;
 
 virtual ~ICoffSectionHeaderColl(){}
 
-virtual std::size_t size(void) const = 0;
+virtual size_type size(void) const = 0;
 
 virtual std::string toString(void) const = 0;
 

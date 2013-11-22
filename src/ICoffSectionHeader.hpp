@@ -24,10 +24,10 @@
 /*
  *  Interface class Checklist:
  *  ==========================
- *  [ ] Methods are abstract: virtual method() = 0;
- *  [ ] No ctor is defined
- *  [ ] Destructor is not abstract: virtual ~dtor();
- *  [ ] Copy operator is private and undefined: T& operator=(const T &);
+ *  [x] Methods are abstract: virtual method() = 0;
+ *  [x] No ctor is defined
+ *  [x] Destructor is not abstract: virtual ~dtor();
+ *  [x] Copy operator is private and undefined: T& operator=(const T &);
  */
 
 #ifndef ICOFFSECTIONHEADER_HPP_
@@ -42,10 +42,11 @@ class ICoffSectionHeader
 public:
 typedef std::unique_ptr<ICoffSectionHeader> uptr;
 typedef std::shared_ptr<ICoffSectionHeader> sptr;
+typedef std::size_t                         size_type;
 
 virtual ~ICoffSectionHeader(){}
 
-virtual std::size_t size(void) const = 0;
+virtual size_type size(void) const = 0;
 
 virtual std::string toString(void) const = 0;
 

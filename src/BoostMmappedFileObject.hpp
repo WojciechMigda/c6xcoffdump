@@ -36,23 +36,26 @@
 #include "boost/iostreams/device/mapped_file.hpp"
 
 #include"IFileObject.hpp"
-#include <cstdint>
 #include <string>
-#include <cstddef>
 
 class BoostMmappedFileObject : public IFileObject
 {
 public:
+typedef IFileObject::size_type  size_type;
+typedef IFileObject::byte_type  byte_type;
+typedef IFileObject::byte_ptr   byte_ptr;
+typedef byte_type const *       cbyte_ptr;
+
 static IFileObject::uptr fromPath(const std::string & in_path);
 virtual ~BoostMmappedFileObject();
 
 private:
 BoostMmappedFileObject(boost::iostreams::mapped_file_source & in_file);
 
-const std::uint8_t * data(void) const;
-virtual std::size_t size(void) const;
-virtual std::uint8_t at(const std::size_t pos) const;
-virtual std::size_t read(std::uint8_t & o_buf, const std::size_t i_size, const std::size_t i_offset) const;
+cbyte_ptr data(void) const;
+virtual size_type size(void) const;
+virtual byte_type at(size_type const pos) const;
+virtual size_type read(byte_ptr const o_buf, size_type const i_size, size_type const i_offset) const;
 
 boost::iostreams::mapped_file_source    m_file;
 };

@@ -72,7 +72,7 @@ bool isSupported(IFileObject::sptr i_file)
 
 }
 
-ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file)
+ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos)
 {
     assert(i_file->size() >= COFF1_2_HEADER_SIZE);
 
@@ -82,16 +82,16 @@ ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file)
         return ICoffFileHeader::uptr{nullptr};
     }
 
-    SectionHeadersNum const section_hdrs_n = FileObject::read_le<std::uint16_t>(i_file, 2);
-    DateTimeStamp const date_time_stamp = FileObject::read_le<std::uint32_t>(i_file, 4);
-    SymbolTableOffset const symtab_offset = FileObject::read_le<std::uint32_t>(i_file, 8);
-    SymbolTableEntriesNum const symtab_entries_n = FileObject::read_le<std::uint32_t>(i_file, 12);
-    OptionalHeaderSize const optional_hdr_size = FileObject::read_le<std::uint16_t>(i_file, 16);
-    Flags const flags = std::bitset<16>(FileObject::read_le<std::uint16_t>(i_file, 18));
-    TargetId const target_id = FileObject::read_le<std::uint16_t>(i_file, 20);
+    SectionHeadersNum const section_hdrs_n = FileObject::read_le<std::uint16_t>(i_file, i_pos + 2);
+    DateTimeStamp const date_time_stamp = FileObject::read_le<std::uint32_t>(i_file, i_pos + 4);
+    SymbolTableOffset const symtab_offset = FileObject::read_le<std::uint32_t>(i_file, i_pos + 8);
+    SymbolTableEntriesNum const symtab_entries_n = FileObject::read_le<std::uint32_t>(i_file, i_pos + 12);
+    OptionalHeaderSize const optional_hdr_size = FileObject::read_le<std::uint16_t>(i_file, i_pos + 16);
+    Flags const flags = std::bitset<16>(FileObject::read_le<std::uint16_t>(i_file, i_pos + 18));
+    TargetId const target_id = FileObject::read_le<std::uint16_t>(i_file, i_pos + 20);
 
     Coff::FileHeader * instance = new Coff::FileHeader
-        {
+    {
         VERSION_ID_COFF2,
         section_hdrs_n,
         date_time_stamp,
@@ -99,7 +99,8 @@ ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file)
         symtab_entries_n,
         optional_hdr_size,
         flags,
-        target_id};
+        target_id
+    };
     ICoffFileHeader::uptr   result{instance};
 
     return result;

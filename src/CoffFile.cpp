@@ -34,20 +34,24 @@
 #include <cassert>
 #include <algorithm>
 
-ICoffFile::uptr Coff::File::fromFileObject(IFileObject::sptr i_file)
+ICoffFile::uptr Coff::File::fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos)
 {
-    ICoffFileHeader::uptr   file_header = Coff::FileHeader::fromFileObject(i_file);
+    ICoffFileHeader::uptr   file_header = Coff::FileHeader::fromFileObject(i_file, i_pos);
 
     assert(file_header);
 
     ICoffSectionHeaderColl::uptr    section_header_coll =
-        Coff::SectionHeaderColl::fromFileObject(i_file, file_header->sectionHeadersNum());
+        Coff::SectionHeaderColl::fromFileObject(i_file, i_pos + file_header->size(), file_header->sectionHeadersNum());
 
     assert(section_header_coll);
 
     Coff::File * instance =
         new (std::nothrow)
-        Coff::File{std::move(file_header), std::move(section_header_coll)};
+        Coff::File
+        {
+            std::move(file_header),
+            std::move(section_header_coll)
+        };
     Coff::File::uptr     result{instance};
 
     return result;

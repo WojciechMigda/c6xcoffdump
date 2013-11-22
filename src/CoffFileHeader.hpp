@@ -40,7 +40,7 @@ namespace Coff
 class FileHeader : public ICoffFileHeader
 {
 public:
-static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file);
+static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos);
 
 ~FileHeader(){}
 

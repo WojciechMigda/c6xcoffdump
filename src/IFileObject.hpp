@@ -24,10 +24,10 @@
 /*
  *  Interface class Checklist:
  *  ==========================
- *  [ ] Methods are abstract: virtual method() = 0;
- *  [ ] No ctor is defined
- *  [ ] Destructor is not abstract: virtual ~dtor();
- *  [ ] Copy operator is private and undefined: T& operator=(const T &);
+ *  [x] Methods are abstract: virtual method() = 0;
+ *  [x] No ctor is defined
+ *  [x] Destructor is not abstract: virtual ~dtor();
+ *  [x] Copy operator is private and undefined: T& operator=(const T &);
  */
 
 #ifndef IFILEOBJECT_HPP_
@@ -40,14 +40,17 @@
 class IFileObject
 {
 public:
-typedef std::unique_ptr<IFileObject> uptr;
-typedef std::shared_ptr<IFileObject> sptr;
+typedef std::unique_ptr<IFileObject>    uptr;
+typedef std::shared_ptr<IFileObject>    sptr;
+typedef std::size_t                     size_type;
+typedef std::uint8_t                    byte_type;
+typedef std::uint8_t *                  byte_ptr;
 
 virtual ~IFileObject(){}
 
-virtual std::size_t size(void) const = 0;
-virtual std::uint8_t at(const std::size_t i_pos) const = 0;
-virtual std::size_t read(std::uint8_t & o_buf, const std::size_t i_size, const std::size_t i_offset) const = 0;
+virtual size_type size(void) const = 0;
+virtual byte_type at(size_type const i_pos) const = 0;
+virtual size_type read(byte_ptr const o_buf, size_type const i_size, size_type const i_offset) const = 0;
 
 private:
 IFileObject & operator=(const IFileObject  &) = delete;

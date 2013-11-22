@@ -32,7 +32,7 @@ int main()
 {
     IFileObject::sptr   file_object = createFileObject("sample.obj");
 
-    ICoffFile::uptr   file = Coff::File::fromFileObject(file_object);
+    ICoffFile::uptr   file = Coff::File::fromFileObject(file_object, 0);
 
     std::cout << file->toString() << std::endl;
 
