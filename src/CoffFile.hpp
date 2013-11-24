@@ -36,9 +36,10 @@ namespace Coff
 class File : public ICoffFile
 {
 public:
+typedef std::size_t         size_type;
 
 File(ICoffFileHeader::uptr i_file_header, ICoffSectionHeaderColl::uptr i_section_hdr_coll);
-static ICoffFile::uptr fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos);
+static ICoffFile::uptr fromFileObject(IFileObject::sptr i_file, size_type const i_pos);
 
 private:
 std::string toString(void) const;
@@ -54,6 +55,5 @@ ICoffSectionHeaderColl::uptr    m_section_header_coll;
 };
 
 }
-
 
 #endif /* COFFFILE_HPP_ */

@@ -42,14 +42,15 @@ class ICoffFileHeader
 public:
 typedef std::unique_ptr<ICoffFileHeader> uptr;
 typedef std::shared_ptr<ICoffFileHeader> sptr;
+typedef std::size_t                      size_type;
 
 virtual ~ICoffFileHeader(){}
 
-virtual std::size_t sectionHeadersNum(void) const = 0;
-virtual std::size_t symbolTableOffset(void) const = 0;
-virtual std::size_t symbolTableEntriesNum(void) const = 0;
+virtual size_type sectionHeadersNum(void) const = 0;
+virtual size_type symbolTableOffset(void) const = 0;
+virtual size_type symbolTableEntriesNum(void) const = 0;
 virtual bool hasOptionalHeader(void) const = 0;
-virtual std::size_t size(void) const = 0;
+virtual size_type size(void) const = 0;
 
 virtual std::string toString(void) const = 0;
 

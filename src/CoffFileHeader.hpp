@@ -31,7 +31,6 @@
 #include "ICoffFileHeader.hpp"
 
 #include <string>
-#include <cstdarg>
 #include <bitset>
 
 namespace Coff
@@ -40,7 +39,9 @@ namespace Coff
 class FileHeader : public ICoffFileHeader
 {
 public:
-static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos);
+typedef ICoffFileHeader::size_type size_type;
+
+static ICoffFileHeader::uptr fromFileObject(IFileObject::sptr i_file, size_type const i_pos);
 
 ~FileHeader(){}
 
@@ -68,11 +69,11 @@ FileHeader(
     );
 
 std::string toString(void) const;
-std::size_t sectionHeadersNum(void) const;
-std::size_t symbolTableOffset(void) const;
-std::size_t symbolTableEntriesNum(void) const;
+size_type sectionHeadersNum(void) const;
+size_type symbolTableOffset(void) const;
+size_type symbolTableEntriesNum(void) const;
 bool hasOptionalHeader(void) const;
-std::size_t size(void) const;
+size_type size(void) const;
 
 VersionId const             mVersionId;
 SectionHeadersNum const     mSectionHeadersNum;

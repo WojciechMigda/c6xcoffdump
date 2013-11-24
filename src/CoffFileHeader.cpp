@@ -72,7 +72,9 @@ bool isSupported(IFileObject::sptr i_file)
 
 }
 
-ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos)
+using size_type = Coff::FileHeader::size_type;
+
+ICoffFileHeader::uptr Coff::FileHeader::fromFileObject(IFileObject::sptr i_file, size_type const i_pos)
 {
     assert(i_file->size() >= COFF1_2_HEADER_SIZE);
 
@@ -163,17 +165,17 @@ std::string Coff::FileHeader::toString(void) const
     return retval;
 }
 
-std::size_t Coff::FileHeader::sectionHeadersNum(void) const
+size_type Coff::FileHeader::sectionHeadersNum(void) const
 {
     return mSectionHeadersNum;
 }
 
-std::size_t Coff::FileHeader::symbolTableOffset(void) const
+size_type Coff::FileHeader::symbolTableOffset(void) const
 {
     return mSymbolTableOffset;
 }
 
-std::size_t Coff::FileHeader::symbolTableEntriesNum(void) const
+size_type Coff::FileHeader::symbolTableEntriesNum(void) const
 {
     return mSymbolTableEntriesNum;
 }
@@ -183,7 +185,7 @@ bool Coff::FileHeader::hasOptionalHeader(void) const
     return mOptionalHeaderSize != 0;
 }
 
-std::size_t Coff::FileHeader::size(void) const
+size_type Coff::FileHeader::size(void) const
 {
     return COFF1_2_HEADER_SIZE;
 }

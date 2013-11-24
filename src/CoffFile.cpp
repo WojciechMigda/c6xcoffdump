@@ -34,7 +34,9 @@
 #include <cassert>
 #include <algorithm>
 
-ICoffFile::uptr Coff::File::fromFileObject(IFileObject::sptr i_file, std::size_t const i_pos)
+using size_type = Coff::File::size_type;
+
+ICoffFile::uptr Coff::File::fromFileObject(IFileObject::sptr i_file, size_type const i_pos)
 {
     ICoffFileHeader::uptr   file_header = Coff::FileHeader::fromFileObject(i_file, i_pos);
 
