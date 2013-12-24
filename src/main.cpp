@@ -36,5 +36,65 @@ int main()
 
     std::cout << file->toString() << std::endl;
 
+    {
+        extern void dupa();
+        dupa();
+    }
+
     return 0;
+}
+
+//////////////////////////////////////////
+
+#include "AbstractVisitable.hpp"
+#include "TrivialTypeClass.hpp"
+
+struct TextNode;
+struct ImageNode;
+
+struct Visitor
+{
+typedef std::unique_ptr<Visitor> uptr;
+
+    void visit(const TextNode& textNode) const { std::cout<<"TextNode."<<std::endl; }
+    void visit(const ImageNode& imageNode) const { std::cout<<"ImageNode."<<std::endl; }
+};
+
+struct TextNode : public AbstractVisitable<Visitor, TextNode> {}; // CRTP
+struct ImageNode : public AbstractVisitable<Visitor, ImageNode> {}; // CRTP
+
+template<typename _Tp, unsigned long long _uniqId>
+class TrivialTypeMixin : public AbstractVisitable<Visitor, TrivialTypeMixin<_Tp, _uniqId>>
+{
+public:
+    typedef _Tp type;
+//    static_assert(std::is_trivial<_Tp>::value == true, "template argument must be a trivial type");
+
+    constexpr TrivialTypeMixin() = default;
+    constexpr TrivialTypeMixin(const type & value) : m_value(value){}
+    operator type &(){return m_value;}
+    operator type const &() const {return m_value;}
+private:
+    type    m_value;
+};
+
+typedef TrivialType<int, (unsigned long long)("Dude"_hash)> Dude;
+//typedef TrivialTypeMixin<int, (unsigned long long)("Dude2"_hash), AbstractVisitable<Visitor, TrivialTypeMixin>> Dude2;
+
+void dupa()
+{
+    TextNode textNode;
+
+    ImageNode imageNode;
+
+    Visitor::uptr visitor(new Visitor);
+
+    IVisitable<Visitor> *visitable = &textNode;
+
+    visitor = visitable->accept(std::move(visitor)); // TextNode.
+
+    visitable = &imageNode;
+
+    visitor = visitable->accept(std::move(visitor)); // ImageNode.
+
 }
